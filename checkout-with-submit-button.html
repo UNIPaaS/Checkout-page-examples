@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.unipaas.com/unipaas.sdk.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.unipaas.com/base.css">
+    <style>
+        body {
+            padding-top: 20px;
+            /* background-color: #312a2a; */
+        }
+    </style>
+</head>
+
+<body>
+    <form class="payment-form">
+        <div class="payment-field">
+            <label for="card-number">
+                Card number
+                <div class="secure-field--container">
+                    <div class="secure-field" id="card-number"></div>
+                    <i class="secure-field--icon"></i>
+                </div>
+            </label>
+        </div>
+
+        <div class="payment-field">
+            <label>
+                Expiry date
+                <div class="secure-field--container">
+                    <div class="secure-field" id="expiry-date"></div>
+                    <i class="secure-field--icon"></i>
+                </div>
+            </label>
+        </div>
+
+        <div class="payment-field">
+            <label>
+                CVC/CVV
+                <div class="secure-field--container">
+                    <div class="secure-field" id="cvv-number"></div>
+                    <i class="secure-field--icon"></i>
+                </div>
+            </label>
+        </div>
+
+        <div class="payment-field">
+            <label>
+                Cardholder name
+                <div class="secure-field--container">
+                    <div class="secure-field" id="holdername"></div>
+                    <i class="secure-field--icon"></i>
+                </div>
+            </label>
+        </div>
+
+        <div class="payment-field">
+            <label>
+                Email
+                <div class="secure-field--container">
+                    <div class="secure-field" id="email"></div>
+                    <i class="secure-field--icon"></i>
+                </div>
+            </label>
+        </div>
+
+        <div class="payment-field">
+            <label>
+                Country
+                <div class="secure-field--container">
+                    <select id="country"></select>
+                    <i class="secure-field--icon"></i>
+                </div>
+            </label>
+        </div>
+
+        <button id="submit-form">Pay</button>
+    </form>
+
+    <script>
+        var unipaas = new Unipaas();
+
+        var sessionToken = 'BRING THE SESSION TOKEN FROM YOUR SERVER'
+
+        // use polyfiils for IE11
+        unipaas.usePolyfills();
+
+        unipaas.initTokenize(
+            sessionToken,
+            {
+                cardNumber: {
+                    selector: "#card-number",
+                    placeholder: "1234 5678 9012 3456 12"
+                },
+                cvv: { selector: "#cvv-number", placeholder: "123" },
+                expiry: {
+                    selector: "#expiry-date",
+                    placeholder: "MM/YY"
+                },
+                cardHolder: {
+                    selector: "#holdername",
+                    placeholder: "A. Einstein"
+                },
+                email: {
+                    selector: "#email",
+                    placeholder: "albert@genius.com"
+                }
+            },
+            {
+                additionalFields: {
+                    country: {
+                        placeholderElementId: "#country"
+                    },
+                    submitButton: {
+                        placeholderElementId: "#submit-form"
+                    }
+                },
+                item: {
+                    currency: "USD",
+                    price: 260
+                },
+                mode: 'test'
+            }
+        );
+
+        unipaas.on('onSuccess', function (data) {
+            console.log('Success:', data)
+        })
+        unipaas.on('onError', function (err) {
+            console.log('Error:', err)
+        })
+    </script>
+</body>
+
+</html>
